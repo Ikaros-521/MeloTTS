@@ -9,13 +9,19 @@ speed = 1.0
 import tempfile
 import click
 device = 'auto'
+# 如有需要，请替换成自己的模型路径
+config_path=None
+ckpt_path=None
+# 整合包内置的屠夫模型测试用代码
+# config_path="melo/logs/config/config.json"
+# ckpt_path="melo/logs/config/G_1000.pth"
 models = {
-    'EN': TTS(language='EN', device=device),
-    'ES': TTS(language='ES', device=device),
-    'FR': TTS(language='FR', device=device),
-    'ZH': TTS(language='ZH', device=device),
-    'JP': TTS(language='JP', device=device),
-    'KR': TTS(language='KR', device=device),
+    'EN': TTS(language='EN', device=device, config_path=config_path, ckpt_path=ckpt_path),
+    'ES': TTS(language='ES', device=device, config_path=config_path, ckpt_path=ckpt_path),
+    'FR': TTS(language='FR', device=device, config_path=config_path, ckpt_path=ckpt_path),
+    'ZH': TTS(language='ZH', device=device, config_path=config_path, ckpt_path=ckpt_path),
+    'JP': TTS(language='JP', device=device, config_path=config_path, ckpt_path=ckpt_path),
+    'KR': TTS(language='KR', device=device, config_path=config_path, ckpt_path=ckpt_path),
 }
 speaker_ids = models['EN'].hps.data.spk2id
 
@@ -41,12 +47,12 @@ def load_speakers(language, text):
 with gr.Blocks() as demo:
     gr.Markdown('# MeloTTS WebUI\n\nA WebUI for MeloTTS.')
     with gr.Group():
-        speaker = gr.Dropdown(speaker_ids.keys(), interactive=True, value='EN-US', label='Speaker')
-        language = gr.Radio(['EN', 'ES', 'FR', 'ZH', 'JP', 'KR'], label='Language', value='EN')
-        speed = gr.Slider(label='Speed', minimum=0.1, maximum=10.0, value=1.0, interactive=True, step=0.1)
-        text = gr.Textbox(label="Text to speak", value=default_text_dict['EN'])
+        speaker = gr.Dropdown(speaker_ids.keys(), interactive=True, value='EN-US', label='说话人')
+        language = gr.Radio(['EN', 'ES', 'FR', 'ZH', 'JP', 'KR'], label='语言', value='EN')
+        speed = gr.Slider(label='语速', minimum=0.1, maximum=10.0, value=1.0, interactive=True, step=0.1)
+        text = gr.Textbox(label="文本输入框", value=default_text_dict['EN'])
         language.input(load_speakers, inputs=[language, text], outputs=[speaker, text])
-    btn = gr.Button('Synthesize', variant='primary')
+    btn = gr.Button('合成', variant='primary')
     aud = gr.Audio(interactive=False)
     btn.click(synthesize, inputs=[speaker, text, speed, language], outputs=[aud])
     gr.Markdown('WebUI by [mrfakename](https://twitter.com/realmrfakename).')

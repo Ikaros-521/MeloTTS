@@ -2,7 +2,8 @@ import os
 import click
 from melo.api import TTS
 
-    
+# import nltk
+# nltk.download('averaged_perceptron_tagger_eng')
     
 @click.command()
 @click.option('--ckpt_path', '-m', type=str, default=None, help="Path to the checkpoint file")

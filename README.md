@@ -23,10 +23,12 @@ Some other features include:
 - The Chinese speaker supports `mixed Chinese and English`.
 - Fast enough for `CPU real-time inference`.
 
-## Usage
-- [Use without Installation](docs/quick_use.md)
-- [Install and Use Locally](docs/install.md)
-- [Training on Custom Dataset](docs/training.md)
+## Usage 使用说明
+bat是整合包专业的~
+
+- [不安装直接使用](docs/quick_use.md)
+- [本地安装使用 | Install and Use Locally](docs/install.md)
+- [自定义数据集训练](docs/training.md)
 
 The Python API and model cards can be found in [this repo](https://github.com/myshell-ai/MeloTTS/blob/main/docs/install.md#python-api) or on [HuggingFace](https://huggingface.co/myshell-ai).
 

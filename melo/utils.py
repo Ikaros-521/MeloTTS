@@ -269,12 +269,12 @@ def get_hparams(init=True):
     config_path = args.config
     config_save_path = os.path.join(model_dir, "config.json")
     if init:
-        with open(config_path, "r") as f:
+        with open(config_path, "r", encoding="utf-8") as f:
             data = f.read()
-        with open(config_save_path, "w") as f:
+        with open(config_save_path, "w", encoding="utf-8") as f:
             f.write(data)
     else:
-        with open(config_save_path, "r") as f:
+        with open(config_save_path, "r", encoding="utf-8") as f:
             data = f.read()
     config = json.loads(data)
 
@@ -366,7 +366,7 @@ def check_git_hash(model_dir):
 
     path = os.path.join(model_dir, "githash")
     if os.path.exists(path):
-        saved_hash = open(path).read()
+        saved_hash = open(path, encoding="utf-8").read()
         if saved_hash != cur_hash:
             logger.warn(
                 "git hash values are different. {}(saved) != {}(current)".format(
@@ -374,7 +374,7 @@ def check_git_hash(model_dir):
                 )
             )
     else:
-        open(path, "w").write(cur_hash)
+        open(path, "w", encoding="utf-8").write(cur_hash)
 
 
 def get_logger(model_dir, filename="train.log"):
@@ -382,13 +382,25 @@ def get_logger(model_dir, filename="train.log"):
     logger = logging.getLogger(os.path.basename(model_dir))
     logger.setLevel(logging.DEBUG)
 
+    # Define the log format
     formatter = logging.Formatter("%(asctime)s\t%(name)s\t%(levelname)s\t%(message)s")
+
+    # Ensure the directory exists
     if not os.path.exists(model_dir):
         os.makedirs(model_dir, exist_ok=True)
-    h = logging.FileHandler(os.path.join(model_dir, filename))
-    h.setLevel(logging.DEBUG)
-    h.setFormatter(formatter)
-    logger.addHandler(h)
+
+    # File handler for writing logs to a file
+    file_handler = logging.FileHandler(os.path.join(model_dir, filename))
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+
+    # Stream handler for printing logs to the terminal (stdout)
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(logging.DEBUG)
+    stream_handler.setFormatter(formatter)
+    logger.addHandler(stream_handler)
+
     return logger
 
 

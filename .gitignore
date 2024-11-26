@@ -9,3 +9,7 @@ build/
 
 *.zip
 *.wav
+/Miniconda3
+hf_download
+melo/data/keira
+melo/logs
